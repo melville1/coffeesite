@@ -1,0 +1,39 @@
+{% extends 'main2.html'%}
+{% block content%}
+<style>
+.password_update{
+    background-color: #40250E;
+    color: white;
+    border: 1px solid white;
+    display: inline-block;
+    padding: 20px;
+    margin-top: 20px;
+    position: relative;
+    left: 20px;
+    bottom: 10px;
+    }
+    .header{
+        margin-left: 30px;
+        margin-top: 30px;
+    }
+
+    .btn{
+        margin-left:50px;
+    }
+
+</style>
+<h2 class="header">Change  Password </h2>
+<div class="password_update">
+<form method="post">
+    {% csrf_token %}
+   {{ form.as_p }}
+   <br>
+    <button class="btn btn-primary btn-medium" type="submit">Submit</button>
+
+
+
+</form>
+
+</div>
+
+{% endblock%}

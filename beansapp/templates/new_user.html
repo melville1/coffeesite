@@ -1,0 +1,8 @@
+<h2> continue create</h2>
+<form method="post" enctype="multipart/form-data">
+    {%csrf_token%} 
+    {{form.as_p}}
+
+</form>
+<input class="btn btn-primary btn-lg" type="submit"  value="Register Account" /> 
+<a class="btn btn-primary btn-lg " href="{% url 'guest' %}">Continue as Guest</a> 

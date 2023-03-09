@@ -1,0 +1,39 @@
+{% extends 'main2.html'%}
+{% block content%}
+<style>
+.profile_update{
+    background-color: #40250E;
+    color: white;
+    border: 1px solid white;
+    display: inline-block;
+    padding: 20px;
+    margin-top: 20px;
+    position: relative;
+    left: 20px;
+    bottom: 10px;
+    }
+    .header{
+        margin-left: 30px;
+        margin-top: 30px;
+    }
+
+</style>
+
+<h2 class="header"> Update your Info </h2>
+<div class="profile_update"> 
+<form method="post" enctype="multipart/form-data">
+    {{ profile_updateform.as_p }}
+    
+    {% csrf_token %}
+   <br>
+    <input class="btn btn-primary btn-lg" type="submit" name="registration" value="Update Profile " /> 
+</form>
+
+</div>
+
+
+
+
+
+
+{% endblock%}

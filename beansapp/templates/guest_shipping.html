@@ -1,0 +1,39 @@
+{% extends 'main2.html'%}
+{% block content %}
+<style>
+    .guest{
+    background-color: #40250E;
+    color: white;
+    border: 1px solid white;
+    display: inline-block;
+    padding: 20px;
+    margin-top: 20px;
+    position: relative;
+    left: 20px;
+    bottom: 10px;
+    }
+
+    .header{
+        margin-left: 30px;
+        margin-top: 30px;
+    }
+
+    .btn{
+        margin-right: 15px;
+    }
+</style>
+<div>
+<h2 class="header">Please fill out your shipping information</h2>
+<div class="guest">
+<form method="post" >
+    {{ form.as_p }}
+     
+    {% csrf_token %}
+    <br>
+    <button class="btn btn-primary btn-lg" type="submit" >Purchase Order</button>
+    {% if currentuser  %}
+    <button class="btn btn-primary btn-lg" type="submit" name= "create_account" > Create Account </button>
+       {% endif %}
+</form>
+</div>
+{% endblock %}

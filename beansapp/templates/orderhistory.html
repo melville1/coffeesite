@@ -1,0 +1,51 @@
+{% extends 'main.html'%}
+
+{% block content%}
+<style>
+    .container{
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+    }
+    .info,.shipping{
+      background-color: #40250E;
+      color: white;
+      border: 1px solid white;
+    }
+    .shipping{
+      display: inline-block;
+      padding: 15px;
+      margin-top: 50px;
+      position: relative;
+      left: 800px;
+      bottom: 10px;
+    }
+    p{
+      margin: 0;
+    }
+  </style>
+<div class="container">
+<h2> Order History </h2>
+<table class="info table table-sm text-center">
+    <tr>
+        <th>Order Id #</th>
+        <th>Date</th>
+        <th>Status</th>
+        
+        <th>Total</th>
+        <th>Receipt</th>
+      </tr>
+    {%for order in addressehistory%}
+    <tr>
+        <td>  {{order.id}}</td>
+        <td>{{order.date}}</td>
+        <td>{{order.status}}</td>
+        <td>{{order.get_total}}</td>
+        <td><a class="btn btn-primary btn-lg" href="{% url 'receipt' order.id %}">View</a></td>
+    </tr>
+
+</div> 
+    {% endfor %}
+</table>   
+
+{% endblock%}

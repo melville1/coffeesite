@@ -1,0 +1,47 @@
+{% extends 'main2.html'%}
+
+{% block content %}
+<style>
+    .registration{
+    background-color: #40250E;
+    color: white;
+    border: 1px solid white;
+    display: inline-block;
+    padding: 20px;
+    margin-top: 20px;
+    position: relative;
+    left: 20px;
+    bottom: 10px;
+    }
+    .pleasereg{
+        margin-left: 30px;
+        margin-top: 30px;
+    }
+</style>
+
+ <h2 class="pleasereg"> Please Register </h2>
+<div class="registration">
+<form method="post" enctype="multipart/form-data">
+    {{ registrationform.as_p }}
+    
+    {% csrf_token %}
+   
+    <input class="btn btn-primary btn-lg" type="submit" name="registration" value="Register Account" /> 
+</form>
+</div>
+
+
+
+<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+</style>
+
+{% endblock %}

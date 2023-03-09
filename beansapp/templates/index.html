@@ -1,0 +1,62 @@
+{% extends 'main.html'%}
+      
+    
+    
+{% block content%}
+<style>
+
+.home{
+margin-top: 50px;
+margin-left: 30px;
+}
+
+.container{
+  margin-top: 120px;
+
+}
+
+.btn{
+  margin-right: 11px;
+}
+
+
+
+</style>
+
+
+<div class="home">
+<h1> Welcome to CoolBeans </h1>
+  
+  
+    
+  
+{% if request.user.is_authenticated %}
+    <div class="container">
+    <div class="row">
+      <div class="col text-center">
+        <a class="btn btn-primary btn-lg " href="{% url 'order' %}">Place Order</a>
+        <!-- <a class="btn btn-primary btn-lg " href="{% url 'order' %}">Place Order</a> -->
+      
+      </div>
+     
+    </div>
+  </div>
+{%else %}
+<div class="container">
+  <div class="row">
+    <div class="col text-center">
+      
+      
+      <a class="btn btn-primary btn-lg " href="{% url 'registration' %}">Registration</a>
+      
+      <a class="btn btn-primary btn-lg " href="{% url 'login' %}">Log In</a>
+      
+      <a class="btn btn-primary btn-lg " href="{% url 'guest' %}">Continue as Guest</a> 
+    </div>
+   
+  </div>
+</div>
+</div>
+  {% endif %}
+  {% endblock %}
+

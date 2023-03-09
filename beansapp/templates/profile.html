@@ -1,0 +1,122 @@
+
+{% extends 'main2.html'%}
+
+
+
+{% block content%}
+{% if request.user.is_authenticated %}
+<style>
+    .container{
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+    }
+    .profile_info{
+      background-color: #40250E;
+      color: white;
+      border: 1px solid white;
+    }
+    .profile_info{
+      display: inline-block;
+      padding: 20px;
+      margin-top: 10px;
+      position: relative;
+      left: 10px;
+      bottom: 10px;
+    }
+
+    .username_info{
+      display: inline-block;
+      padding: 30px;
+      margin-top: 10px;
+      position: relative;
+      left: 400px;
+      bottom: 270px;
+      background-color: #40250E;
+      color: white;
+      border: 1px solid white;
+
+    }
+    p{
+      margin: 0;
+    }
+    .profile_welcome{
+      margin-top: 40px;
+      margin-left: 10px;
+    }
+    .info{
+        margin-top: 40px;
+        margin-left: 10px;
+    }
+    .user_info{
+     
+      margin-left: 400px;
+      margin-top: 40px;
+      
+    }
+    .history_button{
+      display: inline-block;
+      padding: 20px;
+      position: absolute;
+      margin-top: 15px;
+      margin-left: -240px;
+      background-color: #40250E;
+      color: white;
+      border: 1px solid white;
+    }
+
+    .orderhistory{
+      margin-top: 15px;
+      margin-left: 10px;
+    }
+
+   
+
+  </style>
+
+
+<div class="profile_welcome"><h2> Hello {{user.first_name}} {{user.last_name}} </h2></div>
+<div><h3 class="info"> Profile Info   &nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+  Username & Password</h3>
+  
+ 
+</div>
+<div class="profile_info"> 
+    {{user.first_name}} {{user.last_name}}
+    <p>{{user.address}}</p>
+    <p>{{user.city}}, {{user.state}} {{user.zipcode}}</p>
+    <p>{{user.phone_number}}, &nbsp;  {{user.email}} </p>
+    <br>
+    <a class="btn btn-primary btn-sm"  href="{% url 'profile_update' %}"> Update Profile Info </a>
+</div>
+
+
+
+<div></div>
+<div> </div>
+<div class="orderhistory"> <h3> Order History/Status </h3>  </div>
+
+
+<div class="username_info"> 
+  {{user.first_name}} {{user.last_name}}
+  <p> Username: &nbsp;&nbsp;&nbsp;  {{user.username}}</p>
+  <p> Password: &nbsp;&nbsp;&nbsp;  ********</p>
+  
+  <br>
+  <a class="btn btn-primary btn-medium"  href="{% url 'password_update' %}">
+    Change &nbsp; Password
+  </a>
+</div>
+
+
+
+<div class="history_button">
+    <p> Check Status and Order History </p>
+    <br>
+    <a class="btn btn-primary btn-sm"  href="{% url 'orderhistory' %}">
+      Order History
+    </a>
+   
+</div> 
+{% endif %}
+{% endblock%}

@@ -1,0 +1,31 @@
+{% extends 'main.html'%}
+
+{% block content%}
+<style>
+
+  .btn{
+    margin-top:100px;
+    
+  }
+
+  .logout{
+    margin-left:30px;
+    margin-top: 30px;
+  }
+</style>
+<h2 class="logout"> You have been logged out </h2>
+
+<div class="container">
+    <div class="row">
+      <div class="col text-center">
+        
+
+        
+        <a class="btn btn-primary btn-lg " href="{% url 'home' %}"> Return Home </a> 
+      </div>
+
+
+
+
+
+{% endblock %}
