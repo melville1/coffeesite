@@ -5,9 +5,10 @@
 {% block content%}
 <style>
     .order{
+        position:relative;
+        bottom: 15rem;
+        margin-left: 67rem;
         
-        margin-bottom: 5rem;
-        margin-left: 70rem;
     }
 </style>
 <form method="POST" action="">
@@ -18,6 +19,6 @@
 {% endfor %}
 {% csrf_token %}
 
-<input class="btn btn-primary btn-lg order"type="submit" value="submit">
+<input class="btn btn-primary btn-lg order"type="submit" value="Place Order">
 </form>
 {% endblock %} 
