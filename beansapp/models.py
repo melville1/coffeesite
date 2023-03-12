@@ -13,7 +13,7 @@ class Tag(models.Model):
 class Guest(models.Model):
     first_name = models.CharField(max_length=15,null=True,blank=True)
     last_name = models.CharField(max_length=15,null=True,blank=True)
-    address = models.CharField(max_length=15,null=True,blank=True)
+    address = models.CharField(max_length=30,null=True,blank=True)
     city = models.CharField(max_length=15,null=True,blank=True)
     state = models.CharField(max_length=15,null=True,blank=True)
     zipcode = models.IntegerField(null=True,blank=True)
@@ -23,7 +23,7 @@ class Guest(models.Model):
 # addressee indicates the recipient of the order not necessarily the person placing the order.
 class Addressee(AbstractUser):
     
-    address = models.CharField(max_length=15)
+    address = models.CharField(max_length=30)
     city = models.CharField(max_length=15)
     state = models.CharField(max_length=15)
     zipcode = models.IntegerField(null=True)
