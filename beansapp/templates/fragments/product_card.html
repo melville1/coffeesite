@@ -18,15 +18,23 @@
     <div class="col-md-3 mt-1"><img class="img-fluid img-responsive rounded product-image" src="../static/images/{{product.image}}";></div>
     <div class="col-md-6 mt-1">
         <h5> {{ product.title }}</h5>
-        
+        <div class="mt-1 mb-1 spec-1"><span>1 lb</span></div>
+                   
+        <div class="mt-1 mb-1 spec-1"><span>100% Organic</span></div>
+                 
         
         <p class="text-justify text-truncate para mb-0"> {{product.description}} <br><br></p>
     </div>
+    
     <div class="align-items-center align-content-center col-md-3 border-left mt-1">
         <div class="d-flex flex-row align-items-center">
             <h4 class="mr-1">${{ product.price }}</h4>
+            
         </div>
-        <h6 class="text-success">Free shipping</h6>
+        <div>
+        <h6 class="text-success">Free shipping</h6></div>
+        <h6> quantity </h6>
+        
          
             <input type="hidden" name="product_id.{{product.product_id}}" value={{product.product_id}}>    
             <input type="number"name="quantity.{{product.product_id}}" min="0" max="10" value={{product.quantity}} >
