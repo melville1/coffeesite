@@ -1,0 +1,54 @@
+{% extends 'main2.html'%}
+
+{% block content%}
+<style>
+    .image{
+        height: 500px;
+        width:450px;
+        position: relative;
+        bottom: 250px;
+        margin-left: 30rem;
+    }
+
+    .header{
+        margin-left: 35rem;
+        margin-top: 50px;
+    }
+
+    .menu{
+        margin-top: 180px;
+        margin-left: 1100px;
+    }
+
+    .order{
+        margin-top: 50px;
+        margin-left: 1100px;
+    }
+
+
+
+</style>
+<h2 class="header"> Dunkin Beans </h2>
+<div class="menu">
+    <a class="btn btn-primary btn-lg " href="{% url 'menu' %}">More Beans</a>
+   
+  
+  </div>
+  <div class="order">
+    <a class="btn btn-primary btn-lg " href="{% url 'order' %}">Place Order</a>
+   
+  
+  </div>
+
+
+
+<div class="col-md-3 mt-1 image"  > <img class="img-fluid img-responsive rounded product-image"   src="../static/images/beans3.jpg"; </div>
+<br>
+<br>
+<div>
+    <h4> Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem porro voluptatem laborum sunt ullam cumque sit! Optio quia voluptas, aut necessitatibus delectus quas, veniam dolor nam nulla sit corrupti possimus!</h4>
+</div>
+
+
+
+{% endblock%}

@@ -1,0 +1,23 @@
+{% extends 'main2.html'%}
+      
+    
+    
+{% block content%}
+<style>
+    .order{
+        
+        margin-bottom: 5rem;
+        margin-left: 70rem;
+    }
+</style>
+<form method="POST" action="">
+
+{% for product in products %}
+{% include "./fragments/product_card.html" %}
+
+{% endfor %}
+{% csrf_token %}
+
+<input class="btn btn-primary btn-lg order"type="submit" value="submit">
+</form>
+{% endblock %} 

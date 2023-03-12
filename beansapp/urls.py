@@ -27,5 +27,8 @@ urlpatterns = [
     path('profile_update/', Profile_UpdateView.as_view(), name='profile_update' ),
     path('password_update/', auth_views.PasswordChangeView.as_view(template_name='username_update.html',form_class=UsernameForm,success_url='/profile'),name = 'password_update'),
     path('about/', AboutView.as_view(), name ='about'),
+    path('starbucks/', BeansView.as_view(), name ='starbucks'),
+    path('dunkin/', DunkinView.as_view(), name ='dunkin'),
+    path('gregory/', GregoryView.as_view(), name ='gregory'),
     
     ]

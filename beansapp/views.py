@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
 from django.views import View
-from beansapp.models import Order, Addressee,OrderItem,Guest
+from beansapp.models import Order, Addressee,OrderItem,Guest,Product
 from .forms import AddresseeForm,GuestShippingForm,Profile_UpdateForm
 from django.forms import inlineformset_factory
 from django.contrib.auth import views as auth_views
 from django.contrib.auth import authenticate,login,update_session_auth_hash
+from django import http
 
 
 # Create your views here.
@@ -32,22 +33,17 @@ class HomeView(View):
 
 
 class OrderView(View):
-   
     def get (self,request):
-                                    # The orders will be associated with the Order table
-                                    # second arguments specifies which table it will use to make forms
-                                    # we are then able to make one form from these 2 tables.
-        OrderItemFormset = inlineformset_factory(Order,OrderItem, fields=['product','quantity'])
-        #inlineformfactory allow you to create multiple forms at once. makes it more efficient.
-        # # the form will only only contain attributes that are contain within orderitem table 
-        formset = OrderItemFormset() #because line 28  is returning a function we have paranthesis.
+        products = Product.objects.all()
+        products = [dict(image=product.image, title=product.name, description=product.description, price=product.price, product_id=product.id) for product in products]                     
+                            
         username = request.user.username
         currentuser  = request.user
         # AnonymousUser = isAnonymousUser
         
         
         html_data ={ 
-            'formset':formset,
+            'products': products,
             'username':username,
             'currentuser' :currentuser
             }
@@ -55,43 +51,44 @@ class OrderView(View):
 
         return render(
         request= request,
-        template_name= "order.html",
+        template_name= "product_page.html",
         context= html_data
         )
 
     def post(self,request):
-        OrderItemFormset = inlineformset_factory(Order,OrderItem, fields=['product','quantity'])
+        products = list(Product.objects.values_list("id"))
+        
+        grouped = {}
+        for product in products:
+            try:
+                quantity= request.POST[f"quantity.{product[0]}"]
+                grouped[product[0]] = int(quantity) if quantity else 0 
+            except KeyError:
+                continue
+        
+        
+
+        # data = dict(quantity=request.POST["quantity"], product=Product.objects.get(id=request.POST["product_id"]), user=request.user.id)
         addressee = request.user # we are getting the addresse - a set up for the following line
         order = Order.objects.create(addressee=addressee) # order is created connecting it to the addressee
-        formset = OrderItemFormset(request.POST, instance=order)
-        # we are calling the OrderItemFormset and filling it with the post data and then associating with the 
-        # order from line 47 the "instance" in this case means associating with the order
-        # what is happening here is that line 45 calls the form because the post needs it, then 
-        # we get the adresse id this is the set up for the follwing line (47)because we will then 
-        # create an order and associate it with the addressee and his/her info
-        #line 48 then passes the data that was created from the addresse which he created in the post and associates 
-        # to the order from line 47.
-        if formset.is_valid():
-            formset.save() # this adds the data to the database that come from the formset
-        return redirect('confirmation', order.id ) # this redirects us to confirmation 
-        # the second argument "create.id" grabs the id from the order it does this because an object was created
-        # from line 47, therefore we not only access to the id but any other attribute that object may contain
-        # keep in mind this order.id now contains data
+        # order_items = OrderItem.objects.create(order=order, product=data["product"], quantity=data["quantity"])
+        order_items = [OrderItem(order=order, product=Product.objects.get(id=key), quantity=value) for key, value in grouped.items() if value  ] 
+        OrderItem.objects.bulk_create(order_items)
+        return http.HttpResponseRedirect(f'../confirmation/{order.id}')
 
 class GuestView(View):
    
     def get (self,request):
-                                
-        OrderItemFormset = inlineformset_factory(Order,OrderItem, fields=['product','quantity'])
-        
-        formset = OrderItemFormset() 
+        products = Product.objects.all()
+        products = [dict(image=product.image, title=product.name, description=product.description, price=product.price, product_id=product.id) for product in products]                     
+                            
         username = request.user.username
         currentuser  = request.user
         # AnonymousUser = isAnonymousUser
-        print(currentuser)
+        
         
         html_data ={ 
-            'formset':formset,
+            'products': products,
             'username':username,
             'currentuser' :currentuser
             }
@@ -99,48 +96,101 @@ class GuestView(View):
 
         return render(
         request= request,
-        template_name= "order.html",
+        template_name= "product_page.html",
         context= html_data
         )
 
     def post(self,request):
-        OrderItemFormset = inlineformset_factory(Order,OrderItem, fields=['product','quantity'])
+        products = list(Product.objects.values_list("id"))
+        
+        grouped = {}
+        for product in products:
+            try:
+                quantity= request.POST[f"quantity.{product[0]}"]
+                grouped[product[0]] = int(quantity) if quantity else 0 
+            except KeyError:
+                continue
+
         order = Order.objects.create() 
-        formset = OrderItemFormset(request.POST,instance=order)
-       
-        if formset.is_valid():
-            formset.save() # 
-        return redirect('guest_shipping', order.id) 
+
+        order_items = [OrderItem(order=order, product=Product.objects.get(id=key), quantity=value) for key, value in grouped.items() if value  ] 
+        OrderItem.objects.create()
+        return http.HttpResponseRedirect(f'../guest_shipping/{order.id}')
 
 class EditView(View):
 
     def get (self,request,id):
         order = Order.objects.get(id=id)
-        OrderFormset = inlineformset_factory(Order,OrderItem, fields=['product','quantity'],)
-        formset = OrderFormset(instance=order)
-    # the order id is from the previous view here we are accessing and displaying that order 
-    # which is why you see it prefilled. 
+        order_item = OrderItem.objects.filter(order=order)
+
+        products = Product.objects.all()
+        products = [
+            dict(
+                image=product.image,
+                title=product.name,
+                description=product.description, 
+                price=product.price,
+                product_id=product.id, 
+                quantity=order_item.filter(product=product).values_list("quantity").first()[0]
+            ) if order_item.filter(product=product).exists() else   
+            dict(
+                image=product.image,
+                title=product.name,
+                description=product.description, 
+                price=product.price,
+                product_id=product.id, 
+                quantity=0,
+
+            ) for product in products]
+            
+            
+
+
+        username = request.user.username
+        currentuser  = request.user
+        # AnonymousUser = isAnonymousUser
+        
+        
         html_data ={ 
-            'formset':formset
+            'products': products,
+            'username':username,
+            'currentuser' :currentuser
             }
 
 
         return render(
         request= request,
-        template_name= "order.html",
+        template_name= "product_page.html",
         context= html_data
         )
 
        
     def post(self,request,id):
-        order= Order.objects.get(id=id) # this retrieves the order but has the old data 
-        OrderFormset = inlineformset_factory(Order,OrderItem, fields=['product','quantity'],) # making the formset
-        formset = OrderFormset(request.POST, instance=order) 
-        #line 87 whatever new data was put in the post whether it remains the same or not gets resent to the form
-        # associated with that orderid 
-        if formset.is_valid():
-            formset.save() # saves it to the database
-        return redirect('confirmation', order.id ) # redirects us to the confirmation with the orderid associated with
+        order = Order.objects.get(id=id)
+        products = list(Product.objects.values_list("id"))
+        
+        grouped = {}
+        for product in products:
+            try:
+                quantity = request.POST[f"quantity.{product[0]}"]
+                grouped[product[0]] = int(quantity) if quantity else 0 
+            except KeyError:
+                continue
+        order_items = OrderItem.objects.filter(order=order)
+        products_not_included = Product.objects.exclude(
+            id__in=order_items.values_list("product__id", flat=True)
+        )
+        
+        new_order_items = [
+            OrderItem(order=order, product=product, quantity=grouped[product.id]) for product in products_not_included
+            if grouped[product.id]
+        ]
+        OrderItem.objects.bulk_create(new_order_items)
+        for oi in order_items:
+            oi.quantity = grouped[oi.product.id]
+        order_items = OrderItem.objects.bulk_update(order_items, ["quantity"])
+        
+        return http.HttpResponseRedirect(f'../confirmation/{order.id}')
 
 
 class ConfirmationView(View):
@@ -339,11 +389,7 @@ class GuestShippingView(View):
             
 
             return redirect('guest_registration',order.id)
-        
-
-
     
-
          
 class ProfileView(View):
     def get (self,request,):
@@ -400,5 +446,32 @@ class AboutView(View):
         return render(
             request= request,
             template_name= "about.html",
+            context= {}
+        )
+
+class BeansView(View):
+    
+    def get (self,request):
+        return render(
+            request= request,
+            template_name= "starbucks.html",
+            context= {}
+        )
+    
+class DunkinView(View):
+    
+    def get (self,request):
+        return render(
+            request= request,
+            template_name= "dunkin.html",
+            context= {}
+        )
+    
+class GregoryView(View):
+    
+    def get (self,request):
+        return render(
+            request= request,
+            template_name= "gregory.html",
             context= {}
         )

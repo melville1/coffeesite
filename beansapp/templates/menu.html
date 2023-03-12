@@ -2,16 +2,35 @@
 
 {% block content%}
 <style>
+.product{
+    position: relative;
+    margin-bottom: 5px;
+    top: 80px;
+    margin-left: 30px;
+}
 .shipping{
     color:#A65526;
 }
 
+.container{
+    margin-left: 5px;
+    
+}
+
+.order{
+    position: relative;
+    margin-left:1150px;
+    bottom: 400px;
+}
+
+
+
 </style>
 
-<div class="container mt-5 mb-5">
-    <div class="d-flex justify-content-center row">
-        <div class="col-md-10">
-            <div class="row p-2  border rounded">
+<div class="container mt-5 mb-5 product ">
+    <div class="d-flex justify-content-center row ">
+        <div class="col-md-10 ">
+            <div class="row p-2  border rounded  ">
                 <div class="col-md-3 mt-1"><img class="img-fluid img-responsive rounded product-image" src="../static/images/beans2.jpg";></div>
                 <div class="col-md-6 mt-1">
                     <h5> Starbucks</h5>
@@ -27,7 +46,7 @@
                         <h4 class="mr-1">$13.99</h4>
                     </div>
                     <h6 class="text-success">Free shipping</h6>
-                    <div class="d-flex flex-column mt-4"><button class="btn btn-primary btn-sm" type="button">Details</button></div>
+                    <div class="d-flex flex-column mt-4"> <a class="btn btn-primary btn-sm" href="{% url 'starbucks' %}" type="button">Details</a></div>
                 </div>
             </div>
             <div class="row p-2  border rounded mt-2">
@@ -42,11 +61,11 @@
                     <p class="text-justify text-truncate para mb-0">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.<br><br></p>
                 </div>
                 <div class="align-items-center align-content-center col-md-3 border-left mt-1">
-                    <div class="d-flex flex-row align-items-center">
+                    <div class="d-flex flex-row align-items-center" >
                         <h4 class="mr-1">$14.99</h4>
                     </div>
                     <h6 class="text-success">Free shipping</h6>
-                    <div class="d-flex flex-column mt-4"><button class="btn btn-primary btn-sm" type="button">Details</button></div>
+                    <div class="d-flex flex-column mt-4"> <a class="btn btn-primary btn-sm" href="{% url 'dunkin' %}" type="button">Details</a></div>
                 </div>
             </div>
             <div class="row p-2  border rounded mt-2">
@@ -65,7 +84,9 @@
                         <h4 class="mr-1">$13.99</h4>
                     </div>
                     <h6 class="text-success">Free shipping</h6>
-                    <div class="d-flex flex-column mt-4"><button class="btn btn-primary btn-sm" type="button">Details</button></div>
+                    <div class="d-flex flex-column mt-4"> <a class="btn btn-primary btn-sm" href="{% url 'gregory' %}" type="button">Details</a></div>
+
+
                 </div>
             </div>
             
@@ -73,6 +94,11 @@
         </div>
     </div>
 </div>
+<div class="order">
+    <a class="btn btn-primary btn-lg " href="{% url 'order' %}">Place Order</a>
+   
+  
+  </div>
 
 
 
