@@ -68,10 +68,10 @@ class OrderView(View):
         
         
 
-        # data = dict(quantity=request.POST["quantity"], product=Product.objects.get(id=request.POST["product_id"]), user=request.user.id)
+       
         addressee = request.user # we are getting the addresse - a set up for the following line
         order = Order.objects.create(addressee=addressee) # order is created connecting it to the addressee
-        # order_items = OrderItem.objects.create(order=order, product=data["product"], quantity=data["quantity"])
+        
         order_items = [OrderItem(order=order, product=Product.objects.get(id=key), quantity=value) for key, value in grouped.items() if value  ] 
         OrderItem.objects.bulk_create(order_items)
         return http.HttpResponseRedirect(f'../confirmation/{order.id}')
@@ -110,11 +110,12 @@ class GuestView(View):
                 grouped[product[0]] = int(quantity) if quantity else 0 
             except KeyError:
                 continue
-
+        
+     
         order = Order.objects.create() 
 
         order_items = [OrderItem(order=order, product=Product.objects.get(id=key), quantity=value) for key, value in grouped.items() if value  ] 
-        OrderItem.objects.create()
+        OrderItem.objects.bulk_create(order_items)
         return http.HttpResponseRedirect(f'../guest_shipping/{order.id}')
 
 class EditView(View):
@@ -223,7 +224,8 @@ class ConfirmationView(View):
         if 'delete' in request.POST:
             order.delete()
             return redirect('home')
-               
+
+            
 
             
 class ReceiptView(View):
