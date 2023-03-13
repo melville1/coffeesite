@@ -3,6 +3,7 @@
     
     
 {% block content%}
+{% block title %} Order {% endblock title%}
 <style>
     .order{
         position:relative;
@@ -15,6 +16,9 @@
         margin-top: 3rem;
     }
 </style>
+{% if username %}
+    <h2 class="header"> Welcome {{ currentuser }}</h2>
+{% endif %}
 
 <h2 class="header"> Please place your order </h2>
 <form method="POST" action="">
