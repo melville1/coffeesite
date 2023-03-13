@@ -1,7 +1,7 @@
 
 {% extends 'main2.html'%}
 
-
+{% block title %} Profile Update {% endblock title%}
 
 {% block content%}
 {% if request.user.is_authenticated %}
@@ -73,7 +73,7 @@
    
 
   </style>
-  {% block title %} Profile Update {% endblock title%}
+  
 
 
 <div class="profile_welcome"><h2> Hello {{user.first_name}} {{user.last_name}} </h2></div>

@@ -35,8 +35,8 @@ class HomeView(View):
 class OrderView(View):
     def get (self,request):
         products = Product.objects.all()
-        products = [dict(image=product.image, title=product.name, description=product.description, price=product.price, product_id=product.id) for product in products]                     
-                            
+        products = [dict(image=product.image, title=product.name, description=product.description,  price=product.price, product_id=product.id) for product in products]                     
+        # products now becomes a list of dictionaries, inside of each dictionary we will have the keys/values assigned per product.                    
         username = request.user.username
         currentuser  = request.user
         # AnonymousUser = isAnonymousUser
@@ -57,22 +57,25 @@ class OrderView(View):
 
     def post(self,request):
         products = list(Product.objects.values_list("id"))
+        # returns the id as a tuple
         
         grouped = {}
         for product in products:
             try:
                 quantity= request.POST[f"quantity.{product[0]}"]
                 grouped[product[0]] = int(quantity) if quantity else 0 
+                # we are making new keys and values. 
+                # what is in the post quanity. take the current porduct id and make a new key and value with 
+                # with the new corresponding quantity value but if its emptied it sets to zero
             except KeyError:
                 continue
         
-        
-
-       
         addressee = request.user # we are getting the addresse - a set up for the following line
         order = Order.objects.create(addressee=addressee) # order is created connecting it to the addressee
         
         order_items = [OrderItem(order=order, product=Product.objects.get(id=key), quantity=value) for key, value in grouped.items() if value  ] 
+        # for key value we read the if conditional, if there is something in the value we are going to create an order item 
+        # and if not no order gets created
         OrderItem.objects.bulk_create(order_items)
         return http.HttpResponseRedirect(f'../confirmation/{order.id}')
 
